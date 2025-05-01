@@ -520,3 +520,97 @@ footer {
   }
 }
 
+/* Add these styles to your App.css file */
+
+/* Header adjustments for language switcher */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Language Switcher Button */
+.language-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.language-toggle svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Khmer language specific styling */
+.app.kh {
+  /* Add any Khmer-specific styling here */
+  font-family: 'Hanuman', 'Battambang', sans-serif;
+}
+
+.app.kh .hero-title,
+.app.kh .section-title,
+.app.kh .menu-category-title {
+  letter-spacing: normal;
+}
+
+/* Import Khmer fonts */
+@import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@300;400;700&family=Battambang:wght@400;700&display=swap');
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-right {
+    gap: 0.5rem;
+  }
+  
+  .desktop-nav {
+    display: none;
+  }
+  
+  .language-toggle {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .language-toggle span {
+    display: none;
+  }
+  
+  .language-toggle svg {
+    margin-right: 0;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 320px) {
+  .brand-title {
+    font-size: 1.25rem;
+  }
+  
+  .brand-subtitle {
+    font-size: 0.75rem;
+  }
+}
