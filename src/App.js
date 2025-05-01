@@ -238,7 +238,7 @@ const App = () => {
             <Coffee className="brand-icon" size={32} />
             <div>
               <h1 className="brand-title">{content.brand.name}</h1>
-              <p className="brand-subtitle">{content.altName}</p>
+              <p className="brand-subtitle">{content.brand.altName}</p>
             </div>
           </div>
 
