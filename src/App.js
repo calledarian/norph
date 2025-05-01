@@ -35,7 +35,8 @@ const App = () => {
         contact: "Contact"
       },
       brand: {
-        name: "Norphealey"
+        name: "Norphealey",
+        altName: "Coffee & Eatery"
       },
       hero: {
         title: "Welcome to Norphealey",
@@ -76,7 +77,8 @@ const App = () => {
         contact: "ទំនាក់ទំនង"
       },
       brand: {
-        name: "នភាល័យ"
+        name: "នភាល័យ",
+        altName: "កាហ្វេ និងអាហារដ្ឋាន"
       },
       hero: {
         title: "សូមស្វាគមន៍មកកាន់ ណរភាល័យ",
@@ -236,7 +238,7 @@ const App = () => {
             <Coffee className="brand-icon" size={32} />
             <div>
               <h1 className="brand-title">{content.brand.name}</h1>
-              <p className="brand-subtitle">Coffee & Eatery</p>
+              <p className="brand-subtitle">{content.altName}</p>
             </div>
           </div>
 
