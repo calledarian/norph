@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Coffee, MapPin, Phone, Mail, Clock, Menu, Globe } from "lucide-react";
-import "./App.css"
+// TODO: Fix this when we have real styles
+import "./App.css";
 
 const App = () => {
+  // State management
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("en"); // Default language is English
+  const [language, setLanguage] = useState(
+    localStorage.getItem("preferredLanguage") || "en"
+  );
 
+  // Save language preference to localStorage
+  useEffect(() => {
+    localStorage.setItem("preferredLanguage", language);
+  }, [language]);
+
+  // Event handlers
   const handleItemClick = (item) => {
     setActiveItem(item);
     setIsModalOpen(true);
+    // Analytics tracking
+    if (window.gtag) {
+      window.gtag("event", "view_item", {
+        item_name: item.name,
+        item_category: item.category
+      });
+    }
   };
 
   const handleCloseModal = () => {
@@ -25,7 +42,7 @@ const App = () => {
     setLanguage(language === "en" ? "kh" : "en");
   };
 
-  // Content translations
+  // Content translations - might move to separate file later
   const translations = {
     en: {
       nav: {
@@ -116,7 +133,7 @@ const App = () => {
   // Current language content
   const content = translations[language];
 
-  // Menu items with translations
+  // Menu items - FIXME: should load from backend API
   const menuItems = {
     coffee: {
       en: [
@@ -124,25 +141,29 @@ const App = () => {
           name: "Bubble Winter Lemon Tea",
           price: "$2.00",
           description: "A refreshing blend of lemon tea with a hint of winter spices and chewy tapioca pearls.",
-          image: "./bubble-winter.jpg"
+          image: "./bubble-winter.jpg",
+          category: "drinks"
         },
         {
           name: "Peach Soda",
           price: "$2.00",
           description: "A fizzy and fruity soda infused with the sweet flavor of ripe peaches.",
-          image: "./peach-soda.jpg"
+          image: "./peach-soda.jpg",
+          category: "drinks"
         },
         {
           name: "Bubble Tea",
           price: "$1.75",
           description: "Classic milk tea with chewy tapioca pearls for a delightful experience.",
-          image: "./milk-tea.jpg"
+          image: "./milk-tea.jpg",
+          category: "drinks"
         },
         {
           name: "Passion Cream",
-          price: "$2.00",
+          price: "$2.00", // was $3 in Khmer version - need to fix
           description: "A creamy and tropical drink with the tangy flavor of passion fruit.",
-          image: "./passion-cream.jpg"
+          image: "./passion-cream.jpg",
+          category: "drinks"
         }
       ],
       kh: [
@@ -150,25 +171,29 @@ const App = () => {
           name: "តែក្រូចឆ្មារមានពពុះរដូវរងារ",
           price: "$2.00",
           description: "ភេសជ្ជៈតែក្រូចឆ្មារត្រជាក់ជាមួយរសជាតិគ្រឿងទេសរដូវរងារ និងគ្រាប់មុខប៉េងប៉ោង។",
-          image: "./bubble-winter.jpg"
+          image: "./bubble-winter.jpg",
+          category: "drinks"
         },
         {
           name: "សូដាផ្លែទៀប",
           price: "$2.00",
           description: "សូដាផ្លែឈើដែលមានពពុះ និងរសជាតិផ្អែមនៃផ្លែទៀបទុំ។",
-          image: "./peach-soda.jpg"
+          image: "./peach-soda.jpg",
+          category: "drinks"
         },
         {
           name: "តែពពុះ",
           price: "$1.75",
           description: "តែទឹកដោះគោក្លាស៊ិកជាមួយគ្រាប់មុខប៉េងប៉ោងសម្រាប់បទពិសោធន៍ឆ្ងាញ់។",
-          image: "./milk-tea.jpg"
+          image: "./milk-tea.jpg",
+          category: "drinks"
         },
         {
           name: "ក្រែមផេសិន",
-          price: "$3.00",
+          price: "$2.00", // fixing price discrepancy
           description: "ភេសជ្ជៈដែលមានលក្ខណៈក្រែមីនិងត្រូពិចជាមួយរសជាតិជូរអែមនៃផ្លែសាវម៉ាវ។",
-          image: "./passion-cream.jpg"
+          image: "./passion-cream.jpg",
+          category: "drinks"
         }
       ]
     },
@@ -178,19 +203,22 @@ const App = () => {
           name: "Creme Croissant",
           price: "$1.50",
           description: "A delightful croissant filled with rich, creamy custard, perfect for a sweet treat.",
-          image: "./creme-croissant.jpg"
+          image: "./creme-croissant.jpg",
+          category: "pastry"
         },
         {
           name: "Spicy Noodle",
           price: "$2.50",
           description: "A flavorful dish of noodles tossed in a spicy sauce, garnished with fresh herbs and vegetables.",
-          image: "./spicy-noddle.jpg"
+          image: "./spicy-noddle.jpg", // typo in image filename - keep for now
+          category: "main"
         },
         {
           name: "Bingsu",
           price: "$2.00",
           description: "A refreshing dessert made with shaved ice, coconut cream, and tropical toppings.",
-          image: "./bingsu.jpg"
+          image: "./bingsu.jpg",
+          category: "dessert"
         }
       ],
       kh: [
@@ -198,19 +226,22 @@ const App = () => {
           name: "ក្រួស្សង់ក្រែម",
           price: "$1.50",
           description: "នំក្រួស្សង់ដ៏ឆ្ងាញ់ដែលមានបំពេញដោយក្រែមសាច់ស្រស់ គឺជាអាហារសម្រន់ផ្អែមដ៏ល្អឥតខ្ចោះ។",
-          image: "./creme-croissant.jpg"
+          image: "./creme-croissant.jpg",
+          category: "pastry"
         },
         {
           name: "មីហឹរ",
           price: "$2.50",
           description: "ចានមីដ៏ឆ្ងាញ់ដែលចំអិនជាមួយទឹកជ្រលក់ហឹរ និងតុបតែងជាមួយបន្លែនិងគ្រឿងស្រស់ៗ។",
-          image: "./spicy-noddle.jpg"
+          image: "./spicy-noddle.jpg",
+          category: "main"
         },
         {
           name: "ប៊ីងស៊ូ",
           price: "$2.00",
           description: "បង្អែមត្រជាក់ធ្វើពីទឹកកកកោស ក្រែមដូង និងគ្រឿងតុបតែងត្រូពិច។",
-          image: "./bingsu.jpg"
+          image: "./bingsu.jpg",
+          category: "dessert"
         }
       ]
     }
@@ -230,6 +261,18 @@ const App = () => {
     ]
   };
 
+  // Keyboard shortcut for language toggle - press 'L' key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'l' && e.altKey) {
+        toggleLanguage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [language]); // eslint-disable-line
+
   return (
     <div className={`app ${language}`}>
       <header>
@@ -248,10 +291,16 @@ const App = () => {
               <span>{content.languageButton}</span>
             </button>
 
-            <button className="mobile-menu-button" onClick={toggleMobileMenu}>
+            {/* Mobile menu button */}
+            <button
+              className="mobile-menu-button"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+            >
               <Menu size={24} />
             </button>
 
+            {/* Desktop navigation */}
             <nav className="desktop-nav">
               <a href="#about">{content.nav.about}</a>
               <a href="#menu">{content.nav.menu}</a>
@@ -261,6 +310,7 @@ const App = () => {
           </div>
         </div>
 
+        {/* Mobile navigation - only renders when menu is open */}
         {isMenuOpen && (
           <nav className="mobile-nav">
             <a href="#about" onClick={toggleMobileMenu}>{content.nav.about}</a>
@@ -289,7 +339,12 @@ const App = () => {
           <h2 className="section-title">{content.about.title}</h2>
           <div className="about-content">
             <div className="about-image-container">
-              <img src="./lime-on-hand.jpg" alt="Coffee shop interior" className="about-image" />
+              <img
+                src="./lime-on-hand.jpg"
+                alt="Coffee shop interior"
+                className="about-image"
+                loading="lazy"
+              />
             </div>
             <div className="about-text">
               <p>{content.about.paragraph1}</p>
@@ -303,12 +358,25 @@ const App = () => {
         <div className="container">
           <h2 className="section-title">{content.menu.title}</h2>
 
+          {/* Drinks section */}
           <div className="menu-category coffee">
             <h3 className="menu-category-title">{content.menu.coffee}</h3>
             <div className="menu-grid">
               {menuItems.coffee[language].map((item, index) => (
-                <div key={index} className="menu-item" onClick={() => handleItemClick(item)}>
-                  <img src={item.image} alt={item.name} className="menu-item-image" />
+                <div
+                  key={`drink-${index}`}
+                  className="menu-item"
+                  onClick={() => handleItemClick(item)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${item.name}`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="menu-item-image"
+                    loading="lazy"
+                  />
                   <div className="menu-item-content">
                     <h4 className="menu-item-title">{item.name}</h4>
                     <p className="menu-item-price">{item.price}</p>
@@ -318,12 +386,25 @@ const App = () => {
             </div>
           </div>
 
+          {/* Food section */}
           <div className="menu-category food">
             <h3 className="menu-category-title">{content.menu.food}</h3>
             <div className="menu-grid">
               {menuItems.food[language].map((item, index) => (
-                <div key={index} className="menu-item" onClick={() => handleItemClick(item)}>
-                  <img src={item.image} alt={item.name} className="menu-item-image" />
+                <div
+                  key={`food-${index}`}
+                  className="menu-item"
+                  onClick={() => handleItemClick(item)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${item.name}`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="menu-item-image"
+                    loading="lazy"
+                  />
                   <div className="menu-item-content">
                     <h4 className="menu-item-title">{item.name}</h4>
                     <p className="menu-item-price">{item.price}</p>
@@ -340,7 +421,7 @@ const App = () => {
           <h2 className="section-title">{content.testimonials.title}</h2>
           <div className="testimonials-grid">
             {allTestimonials[language].map((testimonial, index) => (
-              <div key={index} className="testimonial-card">
+              <div key={`testimonial-${index}`} className="testimonial-card">
                 <p className="testimonial-text">"{testimonial.text}"</p>
                 <p className="testimonial-author">— {testimonial.name}</p>
               </div>
@@ -389,6 +470,7 @@ const App = () => {
                 style={{ border: 0, borderRadius: '12px' }}
                 allowFullScreen=""
                 loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
           </div>
@@ -403,19 +485,33 @@ const App = () => {
               <span className="footer-brand-name">{content.brand.name}</span>
             </div>
             <div className="footer-links">
-              <a href="https://www.facebook.com/NorphealeyCoffee/" target="blank">Facebook</a>
+              <a href="https://www.facebook.com/NorphealeyCoffee/" target="_blank" rel="noopener noreferrer">Facebook</a>
             </div>
             <p className="footer-copyright">{content.footer.copyright}</p>
+            <div><p>Developed By: </p><a href="https://ariankhadem.vercel.app/ " target="blank"> Arian K.</a></div>
           </div>
         </div>
       </footer>
 
+      {/* Item details modal - only renders when modal is open */}
       {isModalOpen && activeItem && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            // Close when clicking the overlay but not the modal itself
+            if (e.target.className === 'modal-overlay') {
+              handleCloseModal();
+            }
+          }}
+        >
+          <div className="modal" role="dialog" aria-modal="true">
             <div className="modal-image-container">
               <img src={activeItem.image} alt={activeItem.name} className="modal-image" />
-              <button onClick={handleCloseModal} className="modal-close-button">
+              <button
+                onClick={handleCloseModal}
+                className="modal-close-button"
+                aria-label="Close details"
+              >
                 &times;
               </button>
             </div>
